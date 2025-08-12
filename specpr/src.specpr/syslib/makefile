@@ -3,10 +3,8 @@
 SHELL=/bin/sh
 
 OBJ=	\
-ilink.o 	\
 fsleep.o 	\
 time.o 	\
-iulink.o  \
 fsize.o \
 iwrite.o	\
 iread.o	\
@@ -25,6 +23,10 @@ fuser.o		\
 ixdate.o	\
 frandom.o
 
+# 9/2022: this code no longer seems to be called, so skip compiling
+# iulink.o  \
+# ilink.o 	\
+#
 
 $(SP_OBJ)/syslib.o:	$(OBJ)	
 	check_env SPKLUDGE SP_OBJ
@@ -34,9 +36,10 @@ $(SP_OBJ)/syslib.o:	$(OBJ)
 .SUFFIXES:
 .SUFFIXES: .o .c
 	
-ilink.o:		ilink.c
-	check_env SP_CFLAGS
-	$(CC) $(SP_CFLAGS) -c ilink.c
+# 9/2022: this code no longer seems to be called, so skip compiling
+#ilink.o:		ilink.c
+#	check_env SP_CFLAGS
+#	$(CC) $(SP_CFLAGS) -c ilink.c
 
 fsleep.o:	fsleep.c
 	check_env SP_CFLAGS
@@ -50,9 +53,10 @@ time.o:		time.c
 	check_env SP_CFLAGS
 	$(CC) $(SP_CFLAGS) -c time.c
 
-iulink.o:		iulink.c
-	check_env SP_CFLAGS
-	$(CC) $(SP_CFLAGS) -c iulink.c
+# 9/2022: this code no longer seems to be called, so skip compiling
+#iulink.o:		iulink.c
+#	check_env SP_CFLAGS
+#	$(CC) $(SP_CFLAGS) -c iulink.c
 
 fsize.o:		fsize.c
 	check_env SP_CFLAGS

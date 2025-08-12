@@ -66,12 +66,14 @@ comp3ptbd.o:		comp3ptbd.r
 	rm -f comp3ptbd.f
 
 comptetf.o:		comptetf.r
-	$(RF) $(SP_RFLAGS) comptetf.r > comptetf.f 
+	$(SSPP) -r -$(SSPPFLAGS) comptetf.r > comptetf.x 
+	$(RF) $(SP_RFLAGS) comptetf.x > comptetf.f 
 	$(F77) $(SP_FFLAGS) -c comptetf.f
 	rm -f comptetf.f
 
 pmenus1.o:		pmenus1.r
-	$(RF) $(SP_RFLAGS) pmenus1.r > pmenus1.f 
+	$(SSPP) -r -$(SSPPFLAGS) pmenus1.r > pmenus1.x
+	$(RF) $(SP_RFLAGS) pmenus1.x > pmenus1.f 
 	$(F77) $(SP_FFLAGS) -c pmenus1.f
 	rm -f pmenus1.f
 
