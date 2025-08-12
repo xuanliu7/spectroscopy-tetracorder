@@ -274,6 +274,7 @@
 	include "../specpr/src.specpr/common/ioftyp"
 	include "../specpr/src.specpr/common/dscrch"
 	include "../specpr/src.specpr/common/tetfeat"
+	include "../specpr/src.specpr/common/key1"
 
 
 #HPUX	character*80 	ach1, ach2, ach3
@@ -489,6 +490,26 @@
 	}
 
 ##########################################################################
+#      apply force disable to groups, cases and materials in them
+
+	do ig = 1, ngroups {
+		jmat = 0
+		do imat = 1, nmats {
+
+			if (group(imat) == ig) {  #this material is 
+						  # in the group
+				if (groupfdisable(group(imat)) == 0) {
+					write(ttyout,300) ig, imat
+300		format ('group ',i3,' is forced disabled, so disabling material ',i5,' because it is in that group')
+					imatenable(imat) = 0
+				}
+			}
+		}
+	}
+
+	# TBD: add checks for cases
+
+##########################################################################
 
         # ok, we now have temperature and pressure ranges for the incoming
         # data and the library with temperature and pressure constrainbts,
@@ -554,6 +575,7 @@
 		icrst = 1
 		call rstart(icrst)
 		call closef
+		write (ttyout,*) 'Note: ',numals,' variables defined for this session'
 		stop
 	}
 	if (il==ihce & iopcon(i:i) == 'X')  {    # EX exit
@@ -561,6 +583,7 @@
 		icrst = 1
 		call rstart(icrst)
 		call closef
+		write (ttyout,*) 'Note: ',numals,' variables defined for this session'
 		stop
 	}
 	if ( il == ihb) {

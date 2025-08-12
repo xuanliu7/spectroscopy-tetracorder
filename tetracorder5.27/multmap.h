@@ -23,6 +23,7 @@
 	integer*4	lunf
 	integer*4	lunfd
 	integer*4	luntr
+	integer*4       lundnscale
 
 	integer*4	lunfdisable
 	integer*4	lunenblgrp
@@ -171,6 +172,7 @@
 					# for example library spectra from 3 spectrometers:
 					# ASD, FTIR, Oceaniptics (all must be convolved to flight system)
 
+	parameter	(lundnscale=55)  # lun for writing DN scale factor for each material
 	parameter	(lund=56)     # lun for depth file
 	parameter	(lunf=57)     # lun for fit file
 	parameter	(lunfd=58)    # lun for fit*depth file

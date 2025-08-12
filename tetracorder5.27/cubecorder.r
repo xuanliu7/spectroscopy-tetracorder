@@ -774,8 +774,8 @@
 			if (nmatgrp(igroup) == 0) next   # this line make nmats test
 							#  above not necessary
 
-			write (lunresult, 484) igroup
-484			format (/,'***** Group:',i5,' *****')
+			write (lunresult, 484) igroup, pathgrp(igroup)
+484			format (/,'***** Group:',i5,' *****  DIR= ', a)
 
 			itotfitmappixl = 0   # total mapped non-xero pixels fit
 			itotdepthmappixl = 0 # total mapped non-xero pixels depth
@@ -835,8 +835,8 @@
 			if (nmatcse(ncse) == 0) next   # this line make nmats test
 							#  above not necessary
 
-			write (lunresult, 584) ncse
-584			format (/,'*****  Case:',i5,' *****')
+			write (lunresult, 584) ncse, pathcase(ncse)
+584			format (/,'*****  Case:',i5,' *****  DIR= ',a)
 
 			itotfitmappixl = 0   # total mapped non-xero pixels fit
 			itotdepthmappixl = 0 # total mapped non-xero pixels depth

@@ -71,6 +71,8 @@
 	integer*4 imode12  # mode for cases where features defined but get disabled (imod12=12)
 	integer*4 nfen
 
+	character enabledisablestr*10   # enable or   DISABLE
+
 	real*4 x, xsum
 
 # define feature importance characters
@@ -439,6 +441,22 @@
 
 	call getgrpcasenam    # get short names for groups and cases
                               # used in single spectrum output results
+
+
+##############################################################################
+
+# open file for listing DN scaling for each material
+
+	open (unit=lundnscale, file='AAA.info/material-DN-scalling.txt',
+	      access='sequential', form='formatted', status='new', iostat=ier)
+
+	if (ier != 0) {
+
+		write (ttyout,287) ier, 'AAA.info/material-DN-scalling.txt'
+287                     format (' OPEN ERROR',i5,' on ',a)
+	}
+
+##############################################################################
 
 ##############################################################################
 190	if (cmdverbose(-1) <= 1) write (ttyout,191)
@@ -1652,6 +1670,25 @@
 	write (lunhist,463) obits(imat), idn, x, ihbcksl
 463	format (i3, 3x, 'DN ',i6,' = ',f10.4, 9x, a,'# output bits, scale  ')
 
+	if (imatenable(imat) == 0) {
+
+		enabledisablestr = "   DISABLE"
+	} else {
+
+		enabledisablestr = "enable    "
+	}
+
+	if ( group(imat) < 0 )  {   # case
+
+	   write (lundnscale, 289) icase(imat), mfile(imat)(1:mfilelen), idn, x, enabledisablestr
+289	   format('case  ', i5, '  ', a, '  bits= ', i4, ' = ', f8.5, 4x, a)
+
+	} else {  # group
+
+	   write (lundnscale, 290) group(imat), mfile(imat)(1:mfilelen), idn, x, enabledisablestr
+290	   format('group ', i5, '  ', a, '  bits= ', i4, ' = ', f8.5, 4x, a)
+	}
+
 ###########################################################
 ## compression of output if imaging
 
@@ -1732,5 +1769,13 @@ go to 210
 #		write (ttyout,*) 'nmats=',nmats
 #		write (ttyout,*) 'nfeats:',(nfeat(i), i= 1, nmats)
 #	}
+
+	close (unit=lundnscale, iostat=ier)
+	if (ier != 0) {
+
+		write (ttyout,288) ier, 'AAA.info/material-DN-scalling.txt'
+288                     format (' CLOSE ERROR',i5,' on ',a)
+	}
+
 
 	end
