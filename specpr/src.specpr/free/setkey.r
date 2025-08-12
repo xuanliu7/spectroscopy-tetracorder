@@ -28,6 +28,8 @@
 # This subroutine sets up alias words and translations in memory
 # It also deletes an alias from memory
 
+	include "../common/spmaxes"   # max parameters, must be first
+
 	include "../common/key1"
 	include "../common/lbl4"
 	include "../common/lundefs"
@@ -35,8 +37,9 @@
 
 	integer*4  lend
 	ibeg = 1
-	maxals = 199   # this should equal the array sizes -1 in
-                       #      the key1 common block
+	maxals = SPMAXALIAS - 1   # this should equal the array sizes -1 in
+                                  #      the key1 common block
+                                  # 2/2025: now defined by SPMAXALIAS
 
 
 

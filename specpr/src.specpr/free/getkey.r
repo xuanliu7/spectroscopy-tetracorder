@@ -3,7 +3,7 @@
 
 #ccc  name: getkey.r
 #ccc  version date: 7-24-85
-#ccc  author(s): Kathy Kierein
+#ccc  author(s): Kathy Kierein, modified R. Clark 2/2025
 #ccc  language: ratfor
 #ccc
 #ccc  short description: This subroutine is used while in specpr and
@@ -23,15 +23,19 @@
 #ccc  NOTES:
 #ccc
 
-# This subroutine finds the alias words and their sizes
+# This subroutine finds the alias words on the command line and their sizes
+
+	include "../common/spmaxes"   # max parameters, must be first
 
 	include "../common/key1"
 	include "../common/lbl4"
 	include "../common/lundefs"
 
 #RED
-	integer*4 lnb     # function lnb
+	integer*4 lnb     # function lnb (last non-blank)
 	character*1 bckslsh
+
+	integer*4 itmp, itmp2
 
 	bckslsh=char(92)  # this is the backslash character
 
@@ -53,10 +57,13 @@
 			if ((iopcon (i:i) == bckslsh) &
 				(iopcon (i+1:i+1) == '#')) {
 
-				nend = i - 1
+				itmp2 = i - 1
+				nend = lnb (iopcon(1:itmp2))  # find last non blank
 				if (nend < 1) nend = 1
 				if (ibeg > nend) ibeg = nend
 				go to 10
+			
+				
 			}
 		}
 	}

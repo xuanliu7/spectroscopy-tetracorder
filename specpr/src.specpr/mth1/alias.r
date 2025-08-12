@@ -1,6 +1,9 @@
 subroutine alias(iopcon)
 integer gettok, numals
 
+# this subroutine trtanslates a name (keywrd to a special functiomn number
+#      (this is different from command line variables)
+
 #RED
 integer*4 itoa    # function
 integer*4 itoartn

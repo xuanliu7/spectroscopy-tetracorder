@@ -1,4 +1,3 @@
-
 	subroutine allist(lend)
 	implicit integer*4 (i-n)
 
@@ -46,6 +45,10 @@
 
 	integer*4 fbeg, fend, fsize, ier, idummy, lend
 
+	character*1 ihbcksl
+
+	ihbcksl = char(92)  # this is the backslash character
+
 	fbeg = 0
 
 
@@ -64,10 +67,16 @@
 
 	if (fbeg == 0) {
 		do i=1,numals {
+
+			icom2 = acomsiz(i)   # size of a comment
+			if (icom2 < 1) icom2 = 1
 			write (ttyout,10) cmdals(i)(1:alsize(i)), 
-					cmdtrn(i)(1:trnsiz(i))
-10			format ('==[',a,']',a)
+					cmdtrn(i)(1:trnsiz(i)),
+					cmdcomm(i)(1:icom2)
+10			format ('==[',a,']',a, 5x, a)
 		}
+		write (ttyout,12)  numals, SPMAXALIAS
+12		format ('\\# used ',i5,'  out of ',i5,' aliases')
 	}else{
 
 # This prints the list to the specified file
@@ -84,6 +93,7 @@
 			write (ttyout,5) idummy
 5			format ('Error in closing the restart file.',
 				' Subroutine allist.r. iostat=',i4)
+			return
 		}
 
 		open (rlun,file = filenm,access = 'sequential',
@@ -94,30 +104,30 @@
 30			format ('Error in opening file',a,
 				' in subroutine allist.r.',
 				' ier =',i4)
+			return
 		}
 		do j=1,numals {
+			icom2 = acomsiz(i)   # size of a comment
+			if (icom2 < 1) icom2 = 1
 			write (rlun,20) cmdals(j)(1:alsize(j)),
-					cmdtrn(j)(1:trnsiz(j))
-20			format ('==[',a,']',a)
+					cmdtrn(j)(1:trnsiz(j)),
+					cmdcomm(j)(1:icom2)
+20			format ('==[',a,']',a, 5x, a)
 		}
+		write (rlun,22)  numals, SPMAXALIAS
+22		format ('\\# used ',i5,'  out of ',i5,' aliases')
 
-# This closes file and reopens restart file
+		# This closes file and reopens restart file
 
-		close (rlun, iostat = idummy)
+		close (rlun, iostat=idummy)
 		if (idummy != 0) {
 			write (ttyout,40) filenm,idummy
 40		format ('Error in closing file ',a,'in subroutine allist.r',
 			'idummy =',i4)
 		}
 
-# KEL: open rlun within rstart only  (option 4 opens rlun only)
-#		open (rlun, file=irfl, iostat=idummy, access='direct',
-#			recl=2048, form='unformatted')
-#		if (idummy != 0) {
-#			write (ttyout,50) idummy
-#50			format ('Error in reopening the restart file. ',
-#				' Subroutine allist.r.  idummy =',i4)
-#		}
+		# KEL: open rlun within rstart only  (option 4 opens rlun only)
+
 		call rstart(4)
 
 	}
